@@ -9,6 +9,7 @@ def main():
     # Example maze
     new_maze = Maze(150, 150, 10, 10, 50, 50, win)
     new_maze._create_cells()
+    new_maze._break_entrance_and_exit()
     # new_maze._draw_cells()
     
     # # Example cell

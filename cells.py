@@ -1,4 +1,4 @@
-from graphics import Point, Line, BLACK, RED, GRAY
+from graphics import Point, Line, BLACK, RED, GRAY, WHITE
 
 class Cell():
     def __init__(self, x1, y1, x2, y2, win, has_left_wall=True, has_right_wall=True, has_top_wall=True, has_bottom_wall=True):
@@ -14,18 +14,26 @@ class Cell():
         self.has_bottom_wall = has_bottom_wall
 
     def draw_cell(self):
+        left_wall = Line(self.tl_corner, self.bl_corner)
+        right_wall = Line(self.tr_corner, self.br_corner)
+        top_wall = Line(self.tl_corner, self.tr_corner)
+        bottom_wall = Line(self.bl_corner, self.br_corner)
         if self.has_left_wall:
-            left_wall = Line(self.tl_corner, self.bl_corner)
             self._win.draw_line(left_wall, BLACK) 
+        else:
+            self._win.draw_line(left_wall, WHITE)
         if self.has_right_wall:
-            right_wall = Line(self.tr_corner, self.br_corner)
-            self._win.draw_line(right_wall, BLACK) 
+            self._win.draw_line(right_wall, BLACK)
+        else:
+            self._win.draw_line(right_wall, WHITE) 
         if self.has_top_wall:
-            top_wall = Line(self.tl_corner, self.tr_corner)
-            self._win.draw_line(top_wall, BLACK) 
+            self._win.draw_line(top_wall, BLACK)
+        else:
+            self._win.draw_line(top_wall, WHITE)
         if self.has_bottom_wall:
-            bottom_wall = Line(self.bl_corner, self.br_corner)
             self._win.draw_line(bottom_wall, BLACK)
+        else:
+            self._win.draw_line(bottom_wall, WHITE)
 
 
     def draw_move(self, to_cell, undo=False):
