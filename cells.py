@@ -8,11 +8,11 @@ class Cell():
         self.br_corner = Point(x2, y2)
         self.center_point = Point(((x2+x1)/2), ((y2+y1)/2))
         self._win = win
-        self.has_left_wall = has_left_wall
-        self.has_right_wall = has_right_wall
-        self.has_top_wall = has_top_wall
-        self.has_bottom_wall = has_bottom_wall
-        self.visited = visited
+        self.has_left_wall = True
+        self.has_right_wall = True
+        self.has_top_wall = True
+        self.has_bottom_wall = True
+        self.visited = False
 
     def draw_cell(self):
         left_wall = Line(self.tl_corner, self.bl_corner)

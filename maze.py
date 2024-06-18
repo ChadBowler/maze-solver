@@ -1,4 +1,5 @@
 from cells import Cell
+# from graphics import Rectangle
 import time
 import random
 
@@ -68,35 +69,32 @@ class Maze():
     def _break_walls_r(self, current_cell):
         col = ((current_cell.tl_corner.x - self._x1) // self._cell_size_x)
         row = ((current_cell.tl_corner.y - self._y1) // self._cell_size_y)
-        print(f"Col: {col}\nRow: {row}")
         current_cell.visited = True
         if current_cell == self._cells[-1][-1]:
+            self._draw_cells(current_cell)
             return
         while True:
             possibles = []
-            if col-1 >= 0:
-                above = (self._cells[col-1][row], "above")
+            if row-1 >= 0:
+                above = (self._cells[col][row-1], "above")
                 if not above[0].visited:
                     possibles.append(above)
-            if row-1 >= 0:
-                left = (self._cells[col][row-1], "left")
+            if col-1 >= 0:
+                left = (self._cells[col-1][row], "left")
                 if not left[0].visited:
                     possibles.append(left)
-            if col+1 < self._num_cols:
-                below = (self._cells[col+1][row], "below")
+            if row+1 < self._num_cols:
+                below = (self._cells[col][row+1], "below")
                 if not below[0].visited:
                     possibles.append(below)
-            if row+1 < self._num_rows:
-                right = (self._cells[col][row+1], "right")
+            if col+1 < self._num_rows:
+                right = (self._cells[col+1][row], "right")
                 if not right[0].visited:
                     possibles.append(right)
             if len(possibles) == 0:
                 return
             else:
                 next_direction = random.choice(possibles)
-                for possible in possibles:
-                    print(f"Possibles {possible[1]}")
-                print(f"Direciton: {next_direction[1]}")
                 self._remove_wall(current_cell, next_direction[0], next_direction[1])
                 self._break_walls_r(next_direction[0])
 
