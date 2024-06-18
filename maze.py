@@ -40,7 +40,7 @@ class Maze():
         if self._win is None:
             return
         self._win.redraw()
-        time.sleep(.05)
+        time.sleep(.03)
 
     def _break_entrance_and_exit(self):
         entry_cell = self._cells[0][0]
@@ -83,11 +83,11 @@ class Maze():
                 left = (self._cells[col-1][row], "left")
                 if not left[0].visited:
                     possibles.append(left)
-            if row+1 < self._num_cols:
+            if row+1 < self._num_rows:
                 below = (self._cells[col][row+1], "below")
                 if not below[0].visited:
                     possibles.append(below)
-            if col+1 < self._num_rows:
+            if col+1 < self._num_cols:
                 right = (self._cells[col+1][row], "right")
                 if not right[0].visited:
                     possibles.append(right)
@@ -99,4 +99,44 @@ class Maze():
                 self._break_walls_r(next_direction[0])
 
 
+    def _reset_visited_cells(self):
+        for col in self._cells:
+            for cell in col:
+                cell.visited = False
+
+    def solve(self):
+        return self._solve_maze_r(self._cells[0][0])
+
+    def _solve_maze_r(self, current_cell):
+        self._animate()
+        current_cell.visited = True
+        if current_cell == self._cells[-1][-1]:
+            return True
+        col = ((current_cell.tl_corner.x - self._x1) // self._cell_size_x)
+        row = ((current_cell.tl_corner.y - self._y1) // self._cell_size_y)
+        possibles = []
+        if row-1 >= 0:
+            above = self._cells[col][row-1]
+            if not above.visited and not current_cell.has_top_wall:
+                possibles.append(above)
+        if col-1 >= 0:
+            left = self._cells[col-1][row]
+            if not left.visited and not current_cell.has_left_wall:
+                possibles.append(left)
+        if row+1 < self._num_rows:
+            below = self._cells[col][row+1]
+            if not below.visited and not current_cell.has_bottom_wall:
+                possibles.append(below)
+        if col+1 < self._num_cols:
+            right = self._cells[col+1][row]
+            if not right.visited and not current_cell.has_right_wall:
+                possibles.append(right)
+        if len(possibles) > 0:
+            for possible in possibles:
+                current_cell.draw_move(possible)
+                if self._solve_maze_r(possible):
+                    return True
+                current_cell.draw_move(possible, True)
+        else:
+            return False
 
