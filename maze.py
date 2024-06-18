@@ -1,5 +1,4 @@
 from cells import Cell
-# from graphics import Rectangle
 import time
 import random
 
@@ -13,7 +12,7 @@ class Maze():
         self._cell_size_x = cell_size_x
         self._cell_size_y = cell_size_y
         self._win = win
-        
+        # seed to debug maze creation sequence
         if seed is not None:
             self.seed = random.seed(seed)
 
@@ -42,6 +41,7 @@ class Maze():
         self._win.redraw()
         time.sleep(.03)
 
+    # sets the beginning and ending of the maze
     def _break_entrance_and_exit(self):
         entry_cell = self._cells[0][0]
         exit_cell = self._cells[-1][-1]
@@ -50,6 +50,7 @@ class Maze():
         exit_cell.has_bottom_wall = False
         self._draw_cells(exit_cell)
 
+    # redrawing cells while making the maze
     def _remove_wall(self, current_cell, next_cell, direction):
         if direction == "above":
             current_cell.has_top_wall = False
@@ -67,6 +68,7 @@ class Maze():
         self._draw_cells(next_cell)
 
     def _break_walls_r(self, current_cell):
+        # reverse engineer the column and row numbers
         col = ((current_cell.tl_corner.x - self._x1) // self._cell_size_x)
         row = ((current_cell.tl_corner.y - self._y1) // self._cell_size_y)
         current_cell.visited = True
@@ -74,6 +76,7 @@ class Maze():
             self._draw_cells(current_cell)
             return
         while True:
+            # determine the possible directions we can move to open up the maze
             possibles = []
             if row-1 >= 0:
                 above = (self._cells[col][row-1], "above")
@@ -98,7 +101,7 @@ class Maze():
                 self._remove_wall(current_cell, next_direction[0], next_direction[1])
                 self._break_walls_r(next_direction[0])
 
-
+    # resetting visited boolean after creating the maze so we can reuse it to traverse the maze
     def _reset_visited_cells(self):
         for col in self._cells:
             for cell in col:
@@ -112,8 +115,10 @@ class Maze():
         current_cell.visited = True
         if current_cell == self._cells[-1][-1]:
             return True
+        # reverse engineer the column and row numbers
         col = ((current_cell.tl_corner.x - self._x1) // self._cell_size_x)
         row = ((current_cell.tl_corner.y - self._y1) // self._cell_size_y)
+        # traversing possible directions to complete the maze
         possibles = []
         if row-1 >= 0:
             above = self._cells[col][row-1]

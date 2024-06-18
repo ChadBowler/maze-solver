@@ -13,7 +13,7 @@ class Window():
         self.__root.title("Maze Solver")
         self.__root.geometry(f"{width}x{height}")
         self.__root.protocol("WM_DELETE_WINDOW", self.close)
-        # Initially set to fullscreen
+        # Initially set to max screen size
         self.__root.attributes("-zoomed", True)
         # Binding keys to exit and enter fullscreen mode
         self.__root.bind("<F11>", lambda event: self.__root.attributes("-fullscreen",
