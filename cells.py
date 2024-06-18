@@ -1,7 +1,7 @@
 from graphics import Point, Line, BLACK, RED, GRAY, WHITE
 
 class Cell():
-    def __init__(self, x1, y1, x2, y2, win, has_left_wall=True, has_right_wall=True, has_top_wall=True, has_bottom_wall=True):
+    def __init__(self, x1, y1, x2, y2, win, has_left_wall=True, has_right_wall=True, has_top_wall=True, has_bottom_wall=True, visited=False):
         self.tl_corner = Point(x1, y1)
         self.tr_corner = Point(x2, y1)
         self.bl_corner = Point(x1, y2)
@@ -12,6 +12,7 @@ class Cell():
         self.has_right_wall = has_right_wall
         self.has_top_wall = has_top_wall
         self.has_bottom_wall = has_bottom_wall
+        self.visited = visited
 
     def draw_cell(self):
         left_wall = Line(self.tl_corner, self.bl_corner)
